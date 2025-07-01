@@ -1,0 +1,22 @@
+[project]
+name = "stas-ln-translator"
+version = "0.1.0"
+description = "An alternative standalone Light Novel translator for Sugoi Translator."
+readme = "README.md"
+authors = [
+    { name = "Muhd. Danial Danish Roslan", email = "distantwaterstream@gmail.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "beautifulsoup4>=4.13.4",
+    "click>=8.2.1",
+    "httpx>=0.28.1",
+    "lxml>=6.0.0",
+]
+
+[project.scripts]
+stas-ln-translator = "stas_ln_translator:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
