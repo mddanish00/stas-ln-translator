@@ -1,6 +1,6 @@
 import sys
 import importlib.metadata
-import click
+import asyncclick as click
 
 
 from stas_ln_translator import config
