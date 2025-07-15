@@ -1,3 +1,4 @@
+from itertools import batched
 from ebooklib import epub, ITEM_DOCUMENT
 from bs4 import BeautifulSoup
 
@@ -17,6 +18,19 @@ def get_all_documents_in_epub(book: epub.EpubBook) -> dict[str, BeautifulSoup]:
         item.id: BeautifulSoup(item.content, "lxml")
         for item in book.get_items_of_type(ITEM_DOCUMENT)
     }
+
+
+def write_all_documents_to_epub_item(
+    book: epub.EpubBook, documents: dict[str, BeautifulSoup]
+) -> None:
+    """Write all documents back to the EpubBook item.
+
+    Args:
+        book (epub.EpubBook): EpubBook object representing the EPUB book.
+        documents (dict[str, BeautifulSoup]): Dictionary with document IDs as keys and BeautifulSoup objects as values.
+    """
+    for item in book.get_items_of_type(ITEM_DOCUMENT):
+        item.content = str(documents[item.id].prettify())
 
 
 def preprocess_document(soup: BeautifulSoup) -> BeautifulSoup:
@@ -95,3 +109,9 @@ def recombine_text_to_document(
         # Assume soup.find_all and translated_texts dict result in same list length
         tag.string = translated_texts[index]
     return soup
+
+
+# Based on https://stackoverflow.com/a/77832086
+# Python 3.12+
+def chunks(data: dict, SIZE=10000):
+    return map(dict, batched(data.items(), SIZE))
