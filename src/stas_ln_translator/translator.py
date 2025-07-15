@@ -45,7 +45,7 @@ async def translate_epub(book: epub.EpubBook) -> epub.EpubBook:
         # A document = list[list[str]]
         # A request = list[str]
         translated_text_docs: list[list[list[str]]] = await tqdm_asyncio.gather(
-            *requests
+            *requests, unit="doc", desc="Translating documents in EPUB"
         )
 
         for id, soup, translated_doc_key, translated_doc in zip(
