@@ -1,0 +1,50 @@
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+name: release-please
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: googleapis/release-please-action@v4
+        id: release
+        with:
+          release-type: python
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v4
+        if: ${{ steps.release.outputs.release_created }}
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+          python-version: 3.13
+        if: ${{ steps.release.outputs.release_created }}
+      - run: uv sync
+        if: ${{ steps.release.outputs.release_created }}
+      - run: uv build
+        if: ${{ steps.release.outputs.release_created }}
+      - name: Upload Wheel and Source Distribution to Release
+        run: |
+          gh release upload ${{ steps.release.outputs.tag_name }} ./dist/stas_ln_translator-${{ steps.release.outputs.version }}.tar.gz
+          gh release upload ${{ steps.release.outputs.tag_name }} ./dist/stas_ln_translator-${{ steps.release.outputs.version }}-py3-none-any.whl
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: ${{ steps.release.outputs.release_created }}
+      - name: Trigger python-index Rebuilding
+        uses: octokit/request-action@v2.x
+        with:
+          route: POST /repos/{owner}/{repo}/actions/workflows/{workflow}/dispatches
+          owner: mddanish00
+          repo: python-index
+          workflow: generate-index.yaml
+          ref: main
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACTION_SECRET }}
+        if: ${{ steps.release.outputs.release_created }}
