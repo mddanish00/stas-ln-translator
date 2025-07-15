@@ -2,6 +2,12 @@
 
 An alternative standalone Light Novel translator for Sugoi Translator.
 
+<div align="center">
+
+ ![GitHub License](https://img.shields.io/github/license/mddanish00/stas-ln-translator?style=flat-square) ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/mddanish00/stas-ln-translator/release-please.yml?style=flat-square) [![Buy Me A Coffee](https://img.shields.io/badge/mddanish00-black?style=flat-square&logo=buymeacoffee&logoColor=black&label=Buy%20Me%20A%20Coffee&labelColor=%23FFDD00)](https://www.buymeacoffee.com/mddanish00) [![Ko-fi](https://img.shields.io/badge/mddanish00-%2372A4F2?style=flat-square&logo=kofi&label=Ko-fi&labelColor=%23F4EFE7)](https://ko-fi.com/mddanish00)
+
+</div>
+
 stas-ln-translator name is an abbreviation of Sugoi Translator Alternative Standalone Light Novel Translator.
 
 Some parts of this program based on Light-Novel-EPUB-Translator that included in Sugoi Translator.
@@ -97,6 +103,16 @@ Build the project wheel.
 ```commandline
 uv build --wheel
 ```
+
+## Like this project?
+
+Star this project if it is useful for you.
+
+Also, consider buying me a coffee!
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/mddanish00)
+
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/yellow_img.png)](https://www.buymeacoffee.com/mddanish00)
 
 ## License
 
