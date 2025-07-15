@@ -57,13 +57,15 @@ Usage: stas-ln-translator [OPTIONS] INPUT OUTPUT
 
 Options:
   -v, --version              Show the version and exit.
-  --batch_size INTEGER       Number of lines per batch in a request. Only
-                             works when request_type is 'Batch'.
+  --batch_size INTEGER       Number of lines per batch in a request. Batch
+                             request type only.  [default: 100]
   --request_type TEXT        Request type used when contacting API. Either
-                             'Single' or 'Batch'(default).
+                             'Single' or 'Batch'.  [default: Batch]
   --tag_to_translate TEXT    HTML elements to translate, separated by commas
+                             [default: p,h1,h2,h3,h4,h5,h6,title]
   --translator_api_url TEXT  stas-server or any other Sugoi Translator
-                             compatible API URL
+                             compatible API URL  [default:
+                             http://localhost:14366]
   -h, --help                 Show this message and exit.
 ```
 

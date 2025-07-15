@@ -20,7 +20,7 @@ def validate_epub_file(ctx, param, value):
 
 
 @click.command(
-    context_settings=dict(help_option_names=["-h", "--help"]),
+    context_settings=dict(help_option_names=["-h", "--help"], show_default=True),
     help="Run stas-ln-translator, an alternative standalone Light Novel translator for Sugoi Translator. Recommended usage with stas-server.",
 )
 @click.version_option(None, "-v", "--version", message="%(version)s")
@@ -28,13 +28,13 @@ def validate_epub_file(ctx, param, value):
     "--batch_size",
     required=False,
     default=100,
-    help="Number of lines per batch in a request. Only works when request_type is 'Batch'.",
+    help="Number of lines per batch in a request. Batch request type only.",
 )
 @click.option(
     "--request_type",
     required=False,
     default="Batch",
-    help="Request type used when contacting API. Either 'Single' or 'Batch'(default).",
+    help="Request type used when contacting API. Either 'Single' or 'Batch'.",
 )
 @click.option(
     "--tag_to_translate",
