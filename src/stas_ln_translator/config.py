@@ -3,7 +3,6 @@
 
 
 from typing import Callable
-from tempfile import mkdtemp
 
 # How many line per batch request
 batch_size = 100
@@ -19,8 +18,6 @@ translator_api_url = "http://localhost:14366"
 input = "input.epub"
 # Output EPUB file
 output = "output.epub"
-# Temporary directory
-temp_dir = None
 
 
 def loads(
@@ -30,16 +27,17 @@ def loads(
     loaded_request_type: str,
     loaded_tag_to_translate: str,
     loaded_translator_api_url: str,
-    loaded_temp_dir: str = None,
 ):
-    global \
-        input, \
-        output, \
-        batch_size, \
-        request_type, \
-        tag_to_translate, \
-        translator_api_url, \
-        temp_dir
+    global input, output, batch_size, request_type, tag_to_translate, translator_api_url
+
+    if loaded_batch_size < 1:
+        loaded_batch_size = 1
+
+    if loaded_request_type not in ["Single", "Batch"]:
+        loaded_request_type = "Batch"
+
+    if loaded_request_type == "Single":
+        loaded_batch_size = 1
 
     input = loaded_input
     output = loaded_output
@@ -47,10 +45,6 @@ def loads(
     request_type = loaded_request_type
     tag_to_translate = loaded_tag_to_translate.split(",")
     translator_api_url = loaded_translator_api_url
-    if loaded_temp_dir is None:
-        temp_dir = mkdtemp(prefix="stas-ln-translator-")
-    else:
-        temp_dir = loaded_temp_dir
 
 
 # Print current config values
@@ -65,5 +59,4 @@ def print_config(print_func: Callable[[str], None] = print):
     print_func(f"-- Request type: {request_type}")
     print_func(f"-- HTML elements to translate: {tag_to_translate}")
     print_func(f"-- Translator API URL: {translator_api_url}")
-    print_func(f"-- Temporary directory: {temp_dir}")
     print_func("-------------------------------------------------------")
