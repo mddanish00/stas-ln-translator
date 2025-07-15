@@ -1,9 +1,11 @@
 import sys
+import asyncio
 import importlib.metadata
+
 import asyncclick as click
+from ebooklib import epub
 
-
-from stas_ln_translator import config
+from stas_ln_translator import config, translator, process
 
 
 # Call back for validating file need to have '.epub' file extension
@@ -15,14 +17,6 @@ def validate_epub_file(ctx, param, value):
             else f"Output file {value} must have a .epub extension"
         )
     return value
-
-
-def cleanup_temp_dir():
-    if config.temp_dir is not None:
-        import shutil
-
-        shutil.rmtree(config.temp_dir)
-        click.echo(f"Temporary directory '{config.temp_dir}' cleaned up")
 
 
 @click.command(
@@ -66,7 +60,7 @@ def cleanup_temp_dir():
     # help="Output EPUB file",
     callback=validate_epub_file,
 )
-def cli(
+async def cli_main(
     input,
     output,
     translator_api_url,
@@ -87,9 +81,15 @@ def cli(
             f"stas-ln-translator - v{importlib.metadata.version('stas-ln-translator')}"
         )
         config.print_config(click.echo)
-        # Clean up temporary directory
-        cleanup_temp_dir()
+        # Create EpubBook instance for passing to translator
+        book = epub.read_epub(config.input)
+        documents = await translator.translate_epub(book)
+        process.write_all_documents_to_epub_item(book, documents)
+        epub.write_epub(config.output, book)
     except KeyboardInterrupt:
-        click.echo("\nCtrl+C detected. Performing graceful shutdown...")
-        cleanup_temp_dir()
+        click.echo("Ctrl+C detected. Performing graceful shutdown...")
         sys.exit(0)
+
+
+def cli():
+    asyncio.run(cli_main())
