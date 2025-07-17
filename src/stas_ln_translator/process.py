@@ -17,6 +17,7 @@ def get_all_documents_in_epub(book: epub.EpubBook) -> dict[str, BeautifulSoup]:
     return {
         item.id: BeautifulSoup(item.content, "lxml")
         for item in book.get_items_of_type(ITEM_DOCUMENT)
+        if item.is_chapter()
     }
 
 
