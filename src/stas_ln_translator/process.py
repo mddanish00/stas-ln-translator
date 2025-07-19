@@ -31,6 +31,8 @@ def write_all_documents_to_epub_item(
         documents (dict[str, BeautifulSoup]): Dictionary with document IDs as keys and BeautifulSoup objects as values.
     """
     for item in book.get_items_of_type(ITEM_DOCUMENT):
+        if not item.is_chapter():
+            continue
         currentSoup = documents[item.id]
         item.content = str(currentSoup.prettify())
         # Only body will preserved by EBookLib, so we need to manually add title tag back.
