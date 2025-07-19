@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.1.0](https://github.com/mddanish00/stas-ln-translator/compare/v1.0.0...v1.1.0) (2025-07-19)
+
+
+### Features
+
+* update cli to show default values ([0377dd9](https://github.com/mddanish00/stas-ln-translator/commit/0377dd9b634ec9411000c6a4ac1a50316ce9c8db))
+
+
+### Bug Fixes
+
+* :art: manually add missing title tag ([90603ce](https://github.com/mddanish00/stas-ln-translator/commit/90603cea238b379fef3693d2d18a88c0993488fb))
+* add check to make sure only chapter will be written ([b49cad7](https://github.com/mddanish00/stas-ln-translator/commit/b49cad72c7b77e499b3a284ab836f486942d5208))
+* only process chapter items ([5a59450](https://github.com/mddanish00/stas-ln-translator/commit/5a59450c542c5dc2da8d3243b5e85b980b6e8ff0))
+* update translate_epub to correct return type ([06361ff](https://github.com/mddanish00/stas-ln-translator/commit/06361ff6446391f6cf24ee54bb4713f4fc1c9e13))
+
+
+### Documentation
+
+* fix grammar mistake in README ([a2fd41e](https://github.com/mddanish00/stas-ln-translator/commit/a2fd41e241d1772afc1f4816edbdc23c928a808f))
+* properly link the stas-server references to its repository ([a2fd41e](https://github.com/mddanish00/stas-ln-translator/commit/a2fd41e241d1772afc1f4816edbdc23c928a808f))
+* some changes reflecting previous app changes ([0377dd9](https://github.com/mddanish00/stas-ln-translator/commit/0377dd9b634ec9411000c6a4ac1a50316ce9c8db))
+
 ## 1.0.0 (2025-07-15)
 
 
