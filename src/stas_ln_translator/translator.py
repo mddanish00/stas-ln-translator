@@ -1,14 +1,11 @@
 import asyncio
-import warnings
 
-from bs4 import BeautifulSoup, XMLParsedAsHTMLWarning
+from bs4 import BeautifulSoup
 import httpx
 from tqdm.asyncio import tqdm_asyncio
 from ebooklib import epub
 
 from stas_ln_translator import config, process, connection
-
-warnings.filterwarnings("ignore", category=XMLParsedAsHTMLWarning)
 
 
 async def translate_epub(book: epub.EpubBook) -> dict[str, BeautifulSoup]:

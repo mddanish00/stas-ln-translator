@@ -1,11 +1,15 @@
 import sys
 import asyncio
 import importlib.metadata
+import warnings
 
 import asyncclick as click
+from bs4 import XMLParsedAsHTMLWarning
 from ebooklib import epub
 
 from stas_ln_translator import config, translator, process
+
+warnings.filterwarnings("ignore", category=XMLParsedAsHTMLWarning)
 
 
 # Call back for validating file need to have '.epub' file extension
