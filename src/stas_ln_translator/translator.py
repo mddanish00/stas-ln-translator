@@ -5,7 +5,7 @@ import httpx
 from tqdm.asyncio import tqdm_asyncio
 from ebooklib import epub
 
-from stas_ln_translator import config, process, connection
+from stas_ln_translator import config, process, connection, utils
 
 
 async def translate_epub(book: epub.EpubBook) -> dict[str, BeautifulSoup]:
@@ -25,7 +25,7 @@ async def translate_epub(book: epub.EpubBook) -> dict[str, BeautifulSoup]:
             text_dict = process.extract_text_from_document(soup)
             page_keys: list[int] = []
             page_requests: list[asyncio.Future] = []
-            for lines in process.chunks(text_dict, config.batch_size):
+            for lines in utils.chunks(text_dict, config.batch_size):
                 page_requests.append(
                     connection.create_translation_request(
                         list(lines.values()),

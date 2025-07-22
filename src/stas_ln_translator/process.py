@@ -1,4 +1,3 @@
-from itertools import batched
 from ebooklib import epub, ITEM_DOCUMENT
 from bs4 import BeautifulSoup
 
@@ -116,9 +115,3 @@ def recombine_text_to_document(
         # Assume soup.find_all and translated_texts dict result in same list length
         tag.string = translated_texts[index]
     return soup
-
-
-# Based on https://stackoverflow.com/a/77832086
-# Python 3.12+
-def chunks(data: dict, SIZE=10000):
-    return map(dict, batched(data.items(), SIZE))
