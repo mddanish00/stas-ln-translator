@@ -7,7 +7,7 @@ import asyncclick as click
 from bs4 import XMLParsedAsHTMLWarning
 from ebooklib import epub
 
-from stas_ln_translator import config, translator, process
+from stas_ln_translator import config, translator, process, utils
 
 warnings.filterwarnings("ignore", category=XMLParsedAsHTMLWarning)
 
@@ -87,6 +87,10 @@ async def cli_main(
         config.print_config(click.echo)
         # Create EpubBook instance for passing to translator
         book = epub.read_epub(config.input)
+        if utils.get_EPUB_version(book) == 3:
+            # EBookLib don't parse EPUB3 landmarks, so need to add manually
+            utils.add_EPUB3_landmarks_to_epub_item(book)
+        utils.fix_cover_in_epub_item(book)
         documents = await translator.translate_epub(book)
         process.write_all_documents_to_epub_item(book, documents)
         epub.write_epub(config.output, book)

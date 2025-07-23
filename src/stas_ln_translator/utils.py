@@ -29,12 +29,12 @@ def get_first_in_iterator[T](iterator: Iterator[T]):
         return None
 
 
-def get_EPUB3_landmarks_to_epub_item(book: epub.EpubBook) -> None:
+def add_EPUB3_landmarks_to_epub_item(book: epub.EpubBook) -> None:
     """Get EPUB3 landmarks from the EPUB and add them to the EpubBook guide list.
 
     Args:
         book (epub.EpubBook): EpubBook object representing the EPUB book.
-    """    
+    """
     # If the EPUB book actually follow standard, this will definitely not None
     nav_item = get_first_in_iterator(
         item for item in book.get_items() if isinstance(item, epub.EpubNav)
@@ -50,3 +50,19 @@ def get_EPUB3_landmarks_to_epub_item(book: epub.EpubBook) -> None:
                 for t in nav_landmarks.find_all("a")
             ]
             book.guide.extend(landmarks_items)
+
+
+def fix_cover_in_epub_item(book: epub.EpubBook) -> None:
+    cover_guide_href: str | None = get_first_in_iterator(
+        item["href"] for item in book.guide if item["type"] == "cover"
+    )
+    cover_image = get_first_in_iterator(
+        item for item in book.get_items() if isinstance(item, epub.EpubCover)
+    )
+
+    if cover_guide_href is not None and cover_image is not None:
+        cover_html: epub.EpubHtml = book.get_item_with_href(cover_guide_href)
+        new_cover_html = epub.EpubCoverHtml(image_name=cover_image.file_name)
+        new_cover_html.content = cover_html.content
+        book.items.remove(cover_html)
+        book.add_item(new_cover_html)
