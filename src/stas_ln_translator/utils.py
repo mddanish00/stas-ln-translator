@@ -49,7 +49,8 @@ def add_EPUB3_landmarks_to_epub_item(book: epub.EpubBook) -> None:
                 {"href": t["href"], "title": t.string, "type": t["epub:type"]}
                 for t in nav_landmarks.find_all("a")
             ]
-            book.guide.extend(landmarks_items)
+            # Make sure no duplicate
+            book.guide = list(set([*book.guide, *landmarks_items]))
 
 
 def fix_cover_in_epub_item(book: epub.EpubBook) -> None:
