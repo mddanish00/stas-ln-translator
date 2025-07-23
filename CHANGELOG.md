@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.2.0](https://github.com/mddanish00/stas-ln-translator/compare/v1.1.0...v1.2.0) (2025-07-23)
+
+
+### Features
+
+* add fix cover for cover html handle properly ([abfe041](https://github.com/mddanish00/stas-ln-translator/commit/abfe0416693c00dd62217c0c70c7ed3f6389adcc))
+* add util func get EPUB version ([cc95795](https://github.com/mddanish00/stas-ln-translator/commit/cc957954dff25e677c83d1f1e86fba22e53728d1))
+* add util func to add EPUB3 landmark to EpubBook guide list ([cc95795](https://github.com/mddanish00/stas-ln-translator/commit/cc957954dff25e677c83d1f1e86fba22e53728d1))
+* execute new util func on __init__.py ([abfe041](https://github.com/mddanish00/stas-ln-translator/commit/abfe0416693c00dd62217c0c70c7ed3f6389adcc))
+* prevent duplicate in landmark util func ([aeba17e](https://github.com/mddanish00/stas-ln-translator/commit/aeba17eb0a99854024a2b5bf4efa619139f4f888))
+
+
+### Bug Fixes
+
+* chunks util func argument change to lowercase ([db4138c](https://github.com/mddanish00/stas-ln-translator/commit/db4138c955059de13fad01e105894be8c7a5ff32))
+* fix fix-cover util func by adding check ([db4138c](https://github.com/mddanish00/stas-ln-translator/commit/db4138c955059de13fad01e105894be8c7a5ff32))
+* simplify get_first_in_iterator util func ([db4138c](https://github.com/mddanish00/stas-ln-translator/commit/db4138c955059de13fad01e105894be8c7a5ff32))
+* support get_EPUB_version 3.0 and over values ([db4138c](https://github.com/mddanish00/stas-ln-translator/commit/db4138c955059de13fad01e105894be8c7a5ff32))
+* using other way to avoid duplicate in landmark util func ([db4138c](https://github.com/mddanish00/stas-ln-translator/commit/db4138c955059de13fad01e105894be8c7a5ff32))
+
 ## [1.1.0](https://github.com/mddanish00/stas-ln-translator/compare/v1.0.0...v1.1.0) (2025-07-19)
 
 
