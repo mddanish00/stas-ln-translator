@@ -1,7 +1,8 @@
 from itertools import batched
 from typing import Iterator
+
 from bs4 import BeautifulSoup
-from ebooklib import epub
+from ebooklib import epub, ITEM_DOCUMENT
 
 
 # Based on https://stackoverflow.com/a/77832086
@@ -24,6 +25,41 @@ def get_EPUB_version(book: epub.EpubBook) -> int:
 
 def get_first_in_iterator[T](iterator: Iterator[T]):
     return next(iterator, None)
+
+
+def get_all_documents_in_epub(book: epub.EpubBook) -> dict[str, BeautifulSoup]:
+    """Retrieve all documents from an EPUB book and return them as a dictionary.
+
+    Args:
+        book (epub.EpubBook): EpubBook object representing the EPUB book.
+
+    Returns:
+        dict[str, BeautifulSoup]: Dictionary with document IDs as keys and BeautifulSoup objects as values.
+    """
+    return {
+        item.id: BeautifulSoup(item.content, "lxml")
+        for item in book.get_items_of_type(ITEM_DOCUMENT)
+        if item.is_chapter()
+    }
+
+
+def write_all_documents_to_epub_item(
+    book: epub.EpubBook, documents: dict[str, BeautifulSoup]
+) -> None:
+    """Write all documents back to the EpubBook item.
+
+    Args:
+        book (epub.EpubBook): EpubBook object representing the EPUB book.
+        documents (dict[str, BeautifulSoup]): Dictionary with document IDs as keys and BeautifulSoup objects as values.
+    """
+    for item in book.get_items_of_type(ITEM_DOCUMENT):
+        if not item.is_chapter():
+            continue
+        currentSoup = documents[item.id]
+        item.content = str(currentSoup.prettify())
+        # Only body will preserved by EBookLib, so we need to manually add title tag back.
+        if currentSoup.title is not None and currentSoup.title.string is not None:
+            item.title = currentSoup.title.string
 
 
 def add_EPUB3_landmarks_to_epub_item(book: epub.EpubBook) -> None:

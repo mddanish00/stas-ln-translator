@@ -9,7 +9,7 @@ from stas_ln_translator import config, process, connection, utils
 
 
 async def translate_epub(book: epub.EpubBook) -> dict[str, BeautifulSoup]:
-    documents = process.get_all_documents_in_epub(book)
+    documents = utils.get_all_documents_in_epub(book)
     documents: dict[str, BeautifulSoup] = {
         id: process.preprocess_document(soup) for id, soup in documents.items()
     }

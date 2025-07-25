@@ -7,7 +7,7 @@ import asyncclick as click
 from bs4 import XMLParsedAsHTMLWarning
 from ebooklib import epub
 
-from stas_ln_translator import config, translator, process, utils
+from stas_ln_translator import config, translator, utils
 
 warnings.filterwarnings("ignore", category=XMLParsedAsHTMLWarning)
 
@@ -92,7 +92,7 @@ async def cli_main(
             utils.add_EPUB3_landmarks_to_epub_item(book)
         utils.fix_cover_in_epub_item(book)
         documents = await translator.translate_epub(book)
-        process.write_all_documents_to_epub_item(book, documents)
+        utils.write_all_documents_to_epub_item(book, documents)
         epub.write_epub(config.output, book)
     except KeyboardInterrupt:
         click.echo("Ctrl+C detected. Performing graceful shutdown...")
