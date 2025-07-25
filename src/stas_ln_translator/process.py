@@ -1,42 +1,6 @@
-from ebooklib import epub, ITEM_DOCUMENT
 from bs4 import BeautifulSoup
 
 from stas_ln_translator import config
-
-
-def get_all_documents_in_epub(book: epub.EpubBook) -> dict[str, BeautifulSoup]:
-    """Retrieve all documents from an EPUB book and return them as a dictionary.
-
-    Args:
-        book (epub.EpubBook): EpubBook object representing the EPUB book.
-
-    Returns:
-        dict[str, BeautifulSoup]: Dictionary with document IDs as keys and BeautifulSoup objects as values.
-    """
-    return {
-        item.id: BeautifulSoup(item.content, "lxml")
-        for item in book.get_items_of_type(ITEM_DOCUMENT)
-        if item.is_chapter()
-    }
-
-
-def write_all_documents_to_epub_item(
-    book: epub.EpubBook, documents: dict[str, BeautifulSoup]
-) -> None:
-    """Write all documents back to the EpubBook item.
-
-    Args:
-        book (epub.EpubBook): EpubBook object representing the EPUB book.
-        documents (dict[str, BeautifulSoup]): Dictionary with document IDs as keys and BeautifulSoup objects as values.
-    """
-    for item in book.get_items_of_type(ITEM_DOCUMENT):
-        if not item.is_chapter():
-            continue
-        currentSoup = documents[item.id]
-        item.content = str(currentSoup.prettify())
-        # Only body will preserved by EBookLib, so we need to manually add title tag back.
-        if currentSoup.title is not None and currentSoup.title.string is not None:
-            item.title = currentSoup.title.string
 
 
 def preprocess_document(soup: BeautifulSoup) -> BeautifulSoup:
