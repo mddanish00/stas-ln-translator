@@ -68,3 +68,99 @@ def fix_cover_in_epub_item(book: epub.EpubBook) -> None:
             new_cover_html.content = cover_html.content
             book.items.remove(cover_html)
             book.add_item(new_cover_html)
+
+
+type TOCList = list[epub.Link | tuple[epub.Section, TOCList]]
+
+
+def flatten_toc_list(
+    toc_list: TOCList, index_prefix: str | None = None
+) -> tuple[list[epub.Link | epub.Section], list[str]]:
+    """Flatten the table of contents (TOC) list into a flat list of EpubLink and EpubSection objects, along with their hierarchical indices.
+
+    Args:
+        toc_list (TOCList): The table of contents (TOC) list to be flattened.
+        index_prefix (str | None, optional): The prefix for the hierarchical index. Defaults to None.
+
+    Returns:
+        tuple[list[epub.Link | epub.Section], list[str]]: A tuple containing two lists: the first list contains flattened EpubLink and EpubSection objects, and the second list contains their corresponding hierarchical indices.
+    """
+    flattened_list: list[epub.Link | epub.Section] = []
+    index_list: list[str] = []
+
+    for i, item in enumerate(toc_list):
+        current_index = f"{index_prefix}-{i}" if index_prefix else str(i)
+        if isinstance(item, epub.Link):
+            flattened_list.append(item)
+            index_list.append(current_index)
+        elif isinstance(item, tuple) and isinstance(item[0], epub.Section):
+            flattened_list.append(item[0])
+            index_list.append(current_index)
+            nested_flattened, nested_index = flatten_toc_list(item[1], current_index)
+            flattened_list.extend(nested_flattened)
+            index_list.extend(nested_index)
+    return flattened_list, index_list
+
+
+def restore_toc_list(
+    flattened_list: list[epub.Link | epub.Section], index_list: list[str]
+) -> TOCList:
+    """Restore the table of contents (TOC) list from a flattened list of EpubLink and EpubSection objects and their hierarchical indices.
+
+    Args:
+        flattened_list (list[epub.Link  |  epub.Section]): The flattened list of EpubLink and EpubSection objects.
+        index_list (list[str]): The hierarchical indices corresponding to the flattened list.
+
+    Returns:
+        TOCList: The restored table of contents (TOC) list.
+    """
+    restored_list: TOCList = []
+    top_list = [i for i in zip(flattened_list, index_list) if i[1].count("-") == 0]
+
+    for item, index in top_list:
+        if isinstance(item, epub.Link):
+            restored_list.append(item)
+        elif isinstance(item, epub.Section):
+            restored_list.append(
+                (
+                    item,
+                    _get_children_toc_list(
+                        index,
+                        [
+                            i
+                            for i in zip(flattened_list, index_list)
+                            if i[1].startswith(index)
+                        ],
+                    ),
+                )
+            )
+    return restored_list
+
+
+def _get_children_toc_list(
+    parent_index: str,
+    current_list: list[tuple[epub.Link | epub.Section, str]],
+) -> TOCList:
+    """The recursive function to recursively get children TOC list.
+
+    Args:
+        parent_index (str): The parent index of the current list.
+        current_list (list[tuple[epub.Link  |  epub.Section, str]]): The current list of items to process.
+
+    Returns:
+        TOCList: The restored table of contents (TOC) list.
+    """
+    children: TOCList = []
+
+    for i, (item, index) in enumerate(current_list):
+        if index.startswith(parent_index) and (
+            index.count("-") == parent_index.count("-") + 1
+        ):
+            if isinstance(item, epub.Link):
+                children.append(item)
+            elif isinstance(item, epub.Section):
+                # Recursively find children for this section
+                section_children = _get_children_toc_list(index, current_list[i + 1 :])
+                children.append((item, section_children))
+
+    return children
