@@ -1,5 +1,5 @@
+from collections.abc import Iterable, Iterator
 from itertools import batched
-from typing import Iterator
 
 from bs4 import BeautifulSoup
 from ebooklib import epub, ITEM_DOCUMENT
@@ -7,8 +7,10 @@ from ebooklib import epub, ITEM_DOCUMENT
 
 # Based on https://stackoverflow.com/a/77832086
 # Python 3.12+
-def chunks[T, R](data: dict[T, R], size=10000):
-    return map(dict, batched(data.items(), size))
+def chunks(data: Iterable, size=10000):
+    return map(
+        data.__class__, batched(data.items() if hasattr(data, "items") else data, size)
+    )
 
 
 def get_EPUB_version(book: epub.EpubBook) -> int:
