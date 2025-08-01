@@ -2,7 +2,7 @@
 # https://python-patterns.guide/python/module-globals/.
 
 
-from typing import Callable
+from collections.abc import Callable
 
 # How many line per batch request
 batch_size = 100

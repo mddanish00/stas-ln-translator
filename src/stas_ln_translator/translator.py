@@ -26,6 +26,7 @@ async def translate_epub(book: epub.EpubBook) -> dict[str, BeautifulSoup]:
             page_keys: list[int] = []
             page_requests: list[asyncio.Future] = []
             for lines in utils.chunks(text_dict, config.batch_size):
+                lines: dict[int, str]
                 page_requests.append(
                     connection.create_translation_request(
                         list(lines.values()),
@@ -58,3 +59,35 @@ async def translate_epub(book: epub.EpubBook) -> dict[str, BeautifulSoup]:
             )
 
     return documents
+
+
+async def translate_toc(book: epub.EpubBook) -> utils.TOCList:
+    flat_toc_list, index_list = utils.flatten_toc_list(book.toc)
+    requests: list[asyncio.Future] = []
+
+    async with httpx.AsyncClient(timeout=None) as client:
+        for items in utils.chunks(flat_toc_list, config.batch_size):
+            items: list[epub.Link | epub.Section]
+            # Both Link and Section have common attributes, title and href
+            page_requests: list[asyncio.Future] = [
+                connection.create_translation_request(
+                    [item.title, item.href],
+                    client,
+                    config.translator_api_url,
+                    config.request_type,
+                )
+                for item in items
+            ]
+            requests.append(asyncio.gather(*page_requests))
+
+        translated_toc: list[list[str]] = await tqdm_asyncio.gather(
+            *requests, unit="links", desc="Translating table of contents"
+        )
+        full_translated_toc_list = [t for link in translated_toc for t in link]
+
+        assert len(full_translated_toc_list) == len(index_list)
+
+        for id, item in enumerate(flat_toc_list):
+            item.title = full_translated_toc_list[id]
+
+    return utils.restore_toc_list(flat_toc_list, index_list)
