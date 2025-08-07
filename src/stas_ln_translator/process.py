@@ -29,6 +29,14 @@ def preprocess_document(soup: BeautifulSoup) -> BeautifulSoup:
 
     # Find all <p> tags
     for p_tag in soup.find_all("p"):
+        # Remove <img> wrapped with <p> and add after <p>
+        if len(p_tag.children) == 1 and list(p_tag.children)[0].name == "img":
+            p_tag.unwrap()
+            continue
+
+        for img in p_tag.find_all("img"):
+            p_tag.insert_after(img.extract())
+
         # Remove <span> tags but preserve their content
         for span in p_tag.find_all("span"):
             span.unwrap()
