@@ -109,6 +109,10 @@ def fix_cover_in_epub_item(book: epub.EpubBook) -> None:
             new_cover_html.content = cover_html.content
             book.items.remove(cover_html)
             book.add_item(new_cover_html)
+            for i, item in enumerate(book.spine):
+                if item[0] == cover_html.id:
+                    book.spine[i] = (new_cover_html.id, item[1])
+                    break
 
 
 def flatten_toc_list(
