@@ -91,8 +91,9 @@ async def cli_main(
             # EBookLib don't parse EPUB3 landmarks, so need to add manually
             utils.add_EPUB3_landmarks_to_epub_item(book)
         utils.fix_cover_in_epub_item(book)
+        toc_list = await translator.translate_toc(book)
         documents = await translator.translate_epub(book)
-        utils.write_all_documents_to_epub_item(book, documents)
+        utils.write_all_changes_to_epub_item(book, toc_list, documents)
         epub.write_epub(config.output, book)
     except KeyboardInterrupt:
         click.echo("Ctrl+C detected. Performing graceful shutdown...")
