@@ -4,6 +4,8 @@ from itertools import batched
 from bs4 import BeautifulSoup
 from ebooklib import epub, ITEM_DOCUMENT
 
+type TOCList = list[epub.Link | tuple[epub.Section, TOCList]]
+
 
 # Based on https://stackoverflow.com/a/77832086
 # Python 3.12+
@@ -45,8 +47,8 @@ def get_all_documents_in_epub(book: epub.EpubBook) -> dict[str, BeautifulSoup]:
     }
 
 
-def write_all_documents_to_epub_item(
-    book: epub.EpubBook, documents: dict[str, BeautifulSoup]
+def write_all_changes_to_epub_item(
+    book: epub.EpubBook, toc_list: TOCList, documents: dict[str, BeautifulSoup]
 ) -> None:
     """Write all documents back to the EpubBook item.
 
@@ -54,6 +56,7 @@ def write_all_documents_to_epub_item(
         book (epub.EpubBook): EpubBook object representing the EPUB book.
         documents (dict[str, BeautifulSoup]): Dictionary with document IDs as keys and BeautifulSoup objects as values.
     """
+    book.toc = toc_list
     for item in book.get_items_of_type(ITEM_DOCUMENT):
         if not item.is_chapter():
             continue
@@ -106,9 +109,6 @@ def fix_cover_in_epub_item(book: epub.EpubBook) -> None:
             new_cover_html.content = cover_html.content
             book.items.remove(cover_html)
             book.add_item(new_cover_html)
-
-
-type TOCList = list[epub.Link | tuple[epub.Section, TOCList]]
 
 
 def flatten_toc_list(

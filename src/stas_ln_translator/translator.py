@@ -68,17 +68,14 @@ async def translate_toc(book: epub.EpubBook) -> utils.TOCList:
     async with httpx.AsyncClient(timeout=None) as client:
         for items in utils.chunks(flat_toc_list, config.batch_size):
             items: list[epub.Link | epub.Section]
-            # Both Link and Section have common attributes, title and href
-            page_requests: list[asyncio.Future] = [
+            requests.append(
                 connection.create_translation_request(
-                    [item.title, item.href],
+                    [item.title for item in items],
                     client,
                     config.translator_api_url,
                     config.request_type,
                 )
-                for item in items
-            ]
-            requests.append(asyncio.gather(*page_requests))
+            )
 
         translated_toc: list[list[str]] = await tqdm_asyncio.gather(
             *requests, unit="links", desc="Translating table of contents"
