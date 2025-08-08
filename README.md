@@ -49,6 +49,12 @@ uv tool upgrade stas-ln-translator
 
 ### Running Program
 
+> For the best experience with this program, you can use [Sigil](https://github.com/Sigil-Ebook/Sigil) to clean up input EPUB files first. Try some of these.
+>
+> - Tools > Reformat HTML > Mend and Prettify All HTML Files
+> - Tools > Restructure Epub to Sigil Norm
+> - Tools > Epub3 Tools > Generate NCX/Guide for Epub2 readers
+
 ```commandline
 Usage: stas-ln-translator [OPTIONS] INPUT OUTPUT
 
