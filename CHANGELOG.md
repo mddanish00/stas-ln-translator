@@ -1,5 +1,33 @@
 # Changelog
 
+## [1.3.0](https://github.com/mddanish00/stas-ln-translator/compare/v1.2.0...v1.3.0) (2025-08-09)
+
+
+### Features
+
+* :sparkles: add util func for dealing with toc ([5111095](https://github.com/mddanish00/stas-ln-translator/commit/5111095fcb76f19a3e00c755ab70ce802afad5c0))
+* add translate_toc ([f79b6f3](https://github.com/mddanish00/stas-ln-translator/commit/f79b6f3756dd7bd0512b9cdbd149b0860bd6b972))
+* add typing to config ([9c1adc6](https://github.com/mddanish00/stas-ln-translator/commit/9c1adc69880bec636b4808bb793f9990f70d3deb))
+* generalise further chunks util func ([f79b6f3](https://github.com/mddanish00/stas-ln-translator/commit/f79b6f3756dd7bd0512b9cdbd149b0860bd6b972))
+* improve efficiency of restore_toc_list ([05ae5eb](https://github.com/mddanish00/stas-ln-translator/commit/05ae5ebda3f708877d487d3222a70d022d0d5485))
+* translate toc and add to EPUB ([7713ad3](https://github.com/mddanish00/stas-ln-translator/commit/7713ad3abf44947d9af7ddda46b2b7652e3ad866))
+* unwrap p-wrapped img ([e331e68](https://github.com/mddanish00/stas-ln-translator/commit/e331e6823b4d9aed60067d18ff864931f01c6c02))
+
+
+### Bug Fixes
+
+* add more check for existing_hrefs ([9f6d7c6](https://github.com/mddanish00/stas-ln-translator/commit/9f6d7c625a994d0655c2ee7b9ea04708c54cad41))
+* fix error checking p_tag.children length ([9f6d7c6](https://github.com/mddanish00/stas-ln-translator/commit/9f6d7c625a994d0655c2ee7b9ea04708c54cad41))
+* fix length check and image order ([05ae5eb](https://github.com/mddanish00/stas-ln-translator/commit/05ae5ebda3f708877d487d3222a70d022d0d5485))
+* fix logic error on translate_toc func ([7713ad3](https://github.com/mddanish00/stas-ln-translator/commit/7713ad3abf44947d9af7ddda46b2b7652e3ad866))
+* replace cover spine item with new id ([753880d](https://github.com/mddanish00/stas-ln-translator/commit/753880d3c3dfd32aa2685b8e1279370e35edb3d6))
+* restore more details from old cover ([9f6d7c6](https://github.com/mddanish00/stas-ln-translator/commit/9f6d7c625a994d0655c2ee7b9ea04708c54cad41))
+
+
+### Documentation
+
+* add Sigil tips info ([00004a8](https://github.com/mddanish00/stas-ln-translator/commit/00004a868c64bc49d31e307d8c4e7b5330a03b01))
+
 ## [1.2.0](https://github.com/mddanish00/stas-ln-translator/compare/v1.1.0...v1.2.0) (2025-07-23)
 
 
