@@ -160,53 +160,28 @@ def restore_toc_list(
     Returns:
         TOCList: The restored table of contents (TOC) list.
     """
-    restored_list: TOCList = []
-    top_list = [i for i in zip(flattened_list, index_list) if i[1].count("-") == 0]
+    assert len(flattened_list) == len(index_list)
 
-    for item, index in top_list:
-        if isinstance(item, epub.Link):
-            restored_list.append(item)
-        elif isinstance(item, epub.Section):
-            restored_list.append(
-                (
-                    item,
-                    _get_children_toc_list(
-                        index,
-                        [
-                            i
-                            for i in zip(flattened_list, index_list)
-                            if i[1].startswith(index)
-                        ],
-                    ),
-                )
-            )
-    return restored_list
+    items_by_index = dict(zip(index_list, flattened_list))
+    children_by_parent_index: dict[str, list[str]] = {}
 
+    for index in index_list:
+        parent_index = "root"
+        if "-" in index:
+            parent_index = index.rpartition("-")[0]
 
-def _get_children_toc_list(
-    parent_index: str,
-    current_list: list[tuple[epub.Link | epub.Section, str]],
-) -> TOCList:
-    """The recursive function to recursively get children TOC list.
+        children_by_parent_index.setdefault(parent_index, []).append(index)
 
-    Args:
-        parent_index (str): The parent index of the current list.
-        current_list (list[tuple[epub.Link  |  epub.Section, str]]): The current list of items to process.
+    def build_tree(parent_index: str) -> TOCList:
+        restored_list: TOCList = []
+        child_indices = children_by_parent_index.get(parent_index, [])
 
-    Returns:
-        TOCList: The restored table of contents (TOC) list.
-    """
-    children: TOCList = []
-
-    for i, (item, index) in enumerate(current_list):
-        if index.startswith(parent_index) and (
-            index.count("-") == parent_index.count("-") + 1
-        ):
+        for child_index in child_indices:
+            item = items_by_index[child_index]
             if isinstance(item, epub.Link):
-                children.append(item)
+                restored_list.append(item)
             elif isinstance(item, epub.Section):
-                # Recursively find children for this section
-                section_children = _get_children_toc_list(index, current_list[i + 1 :])
-                children.append((item, section_children))
+                restored_list.append((item, build_tree(child_index)))
+        return restored_list
 
-    return children
+    return build_tree("root")
