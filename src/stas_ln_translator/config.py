@@ -5,19 +5,19 @@
 from collections.abc import Callable
 
 # How many line per batch request
-batch_size = 100
+batch_size: int = 100
 # If request type is `Single`, batch_size of 1 will be enforced
 # Also, post request from translation API with "translate sentence" request.
 # If request type is `Batch`, post request from translation API with "translate batch" request.
-request_type = "Batch"
+request_type: str = "Batch"
 # HTML elements to translate
-tag_to_translate = ["p", "h1", "h2", "h3", "h4", "h5", "h6", "title"]
+tag_to_translate: list[str] = ["p", "h1", "h2", "h3", "h4", "h5", "h6", "title"]
 # Translator API URL
-translator_api_url = "http://localhost:14366"
+translator_api_url: str = "http://localhost:14366"
 # Input EPUB file
-input = "input.epub"
+input: str = "input.epub"
 # Output EPUB file
-output = "output.epub"
+output: str = "output.epub"
 
 
 def loads(
