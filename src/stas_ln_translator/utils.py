@@ -90,7 +90,10 @@ def add_EPUB3_landmarks_to_epub_item(book: epub.EpubBook) -> None:
             # Make sure no duplicate
             existing_hrefs = {item["href"] for item in book.guide}
             for landmark in landmarks_items:
-                if landmark["href"] not in existing_hrefs:
+                if (
+                    landmark["href"] not in existing_hrefs
+                    and f"Text/{landmark['href']}" not in existing_hrefs
+                ):
                     book.guide.append(landmark)
 
 
@@ -105,14 +108,15 @@ def fix_cover_in_epub_item(book: epub.EpubBook) -> None:
     if cover_guide_href is not None and cover_image is not None:
         cover_html: epub.EpubHtml | None = book.get_item_with_href(cover_guide_href)
         if cover_html is not None:
-            new_cover_html = epub.EpubCoverHtml(image_name=cover_image.file_name)
+            new_cover_html = epub.EpubCoverHtml(
+                uid=cover_html.id,
+                file_name=cover_html.file_name,
+                image_name=f"../{cover_image.file_name}",
+            )
             new_cover_html.content = cover_html.content
+            new_cover_html.is_linear = cover_html.is_linear
             book.items.remove(cover_html)
             book.add_item(new_cover_html)
-            for i, item in enumerate(book.spine):
-                if item[0] == cover_html.id:
-                    book.spine[i] = (new_cover_html.id, item[1])
-                    break
 
 
 def flatten_toc_list(
