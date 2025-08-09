@@ -30,11 +30,14 @@ def preprocess_document(soup: BeautifulSoup) -> BeautifulSoup:
     # Find all <p> tags
     for p_tag in soup.find_all("p"):
         # Remove <img> wrapped with <p> and add after <p>
-        if len(list(p_tag.children)) == 1 and list(p_tag.children)[0].name == "img":
+        # More robustly check if the paragraph only contains an image, allowing for whitespace.
+        child_tags = p_tag.find_all(True, recursive=False)
+        if not p_tag.get_text(strip=True) and len(child_tags) == 1 and child_tags[0].name == 'img':
             p_tag.unwrap()
             continue
-
-        for img in p_tag.find_all("img"):
+        
+        # Iterate in reverse to maintain the original order of multiple images when moving them after the paragraph.
+        for img in reversed(p_tag.find_all("img")):
             p_tag.insert_after(img.extract())
 
         # Remove <span> tags but preserve their content
