@@ -1,13 +1,14 @@
 [project]
 name = "stas-ln-translator"
 version = "1.3.0"
-description = "An alternative standalone Light Novel translator for Sugoi Translator."
+description = "Alternative standalone Light Novel translator for Sugoi Translator."
 readme = "README.md"
 authors = [
     { name = "Muhd. Danial Danish Roslan", email = "distantwaterstream@gmail.com" }
 ]
-requires-python = ">= 3.12, < 3.14"
-license = { text = "MIT" }
+requires-python = ">= 3.12, < 3.15"
+license = "MIT"
+license-files = ["LICENSE*"]
 dependencies = [
     "beautifulsoup4>=4.13.4",
     "ebooklib>=0.19",
@@ -20,5 +21,5 @@ dependencies = [
 stas-ln-translator = "stas_ln_translator:cli"
 
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["uv_build>=0.9.10,<0.10.0"]
+build-backend = "uv_build"
