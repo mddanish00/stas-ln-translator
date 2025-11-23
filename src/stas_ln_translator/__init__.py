@@ -1,3 +1,4 @@
+import sys
 import argparse
 import asyncio
 import warnings
@@ -41,42 +42,50 @@ def get_arguments() -> tuple[int, str, str, str, str, str]:
     parser.add_argument(
         "--tag_to_translate",
         default="p,h1,h2,h3,h4,h5,h6,title",
-        help="HTML elements to translate, separated by commas",
+        help="HTML elements to translate, separated by commas.",
     )
     parser.add_argument(
         "--translator_api_url",
         default="http://localhost:14366",
-        help="stas-server or any other Sugoi Translator compatible API URL",
+        help="stas-server or any other Sugoi Translator compatible API URL.",
+    )
+    parser.add_argument(
+        "--overwrite",
+        action="store_true",
+        help="Overwrite output file if it already exists.",
     )
     parser.add_argument(
         "input",
         type=Path,
-        help="Input EPUB file",
+        help="Input EPUB file.",
     )
     parser.add_argument(
         "output",
         type=Path,
-        help="Output EPUB file",
+        help="Output EPUB file.",
     )
 
     args = parser.parse_args()
 
     if args.input.suffix != ".epub":
-        parser.error(f"Input file {args.input} must have a .epub extension")
+        parser.error(f"Input file {args.input} must have a .epub extension.")
 
     if not args.input.exists():
-        parser.error(f"`{args.input}` does not exist")
+        parser.error(f"`{args.input}` does not exist.")
+
+    if args.output.exists() and not args.overwrite:
+        parser.error(f"`{args.output}` already exist. Use --overwrite to overwrite.")
 
     if args.output.suffix != ".epub":
-        parser.error(f"Output file {args.output} must have a .epub extension")
+        parser.error(f"Output file {args.output} must have a .epub extension.")
 
     return (
         args.batch_size,
         args.request_type,
         args.tag_to_translate,
         args.translator_api_url,
-        args.input.resolve().__str__(),
-        args.output.resolve().__str__(),
+        str(args.input.resolve()),
+        str(args.output.resolve()),
     )
 
 
@@ -112,4 +121,8 @@ def cli():
     )
     print(f"stas-ln-translator - v{current_version}")
     config.print_config()
-    asyncio.run(cli_main())
+    try:
+        asyncio.run(cli_main())
+    except KeyboardInterrupt:
+        print("Ctrl+C detected. Performing graceful shutdown...")
+        sys.exit(0)

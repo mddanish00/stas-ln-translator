@@ -58,15 +58,15 @@ uv tool upgrade stas-ln-translator
 ```commandline
 usage: stas-ln-translator [-h] [-v] [--batch_size BATCH_SIZE] [--request_type {Single,Batch}]
                           [--tag_to_translate TAG_TO_TRANSLATE]
-                          [--translator_api_url TRANSLATOR_API_URL]
+                          [--translator_api_url TRANSLATOR_API_URL] [--overwrite]
                           input output
 
 Run stas-ln-translator, an alternative standalone Light Novel translator for Sugoi Translator.
 Recommended usage with stas-server.
 
 positional arguments:
-  input                 Input EPUB file
-  output                Output EPUB file
+  input                 Input EPUB file.
+  output                Output EPUB file.
 
 options:
   -h, --help            show this help message and exit
@@ -78,11 +78,12 @@ options:
                         Request type used when contacting API. Either 'Single' or 'Batch'.
                         (default: Batch)
   --tag_to_translate TAG_TO_TRANSLATE
-                        HTML elements to translate, separated by commas (default:
+                        HTML elements to translate, separated by commas. (default:
                         p,h1,h2,h3,h4,h5,h6,title)
   --translator_api_url TRANSLATOR_API_URL
-                        stas-server or any other Sugoi Translator compatible API URL (default:
+                        stas-server or any other Sugoi Translator compatible API URL. (default:
                         http://localhost:14366)
+  --overwrite           Overwrite output file if it already exists. (default: False)
 ```
 
 #### Options
