@@ -1,6 +1,6 @@
 # stas-ln-translator
 
-An alternative standalone Light Novel translator for Sugoi Translator.
+Alternative standalone Light Novel translator for Sugoi Translator.
 
 <div align="center">
 
@@ -27,7 +27,7 @@ Not affiliated with Sugoi Translator.
 
 - [stas-server](https://github.com/mddanish00/stas-server) or Sugoi Offline Translator (only `request_type=Single` can be used).
 
-- Python 3.12 or Python 3.13. Python 3.14 and later are not yet supported.
+- Python 3.12 - 3.14. Python 3.15 and later are not yet supported.
 
 ### Installation
 
