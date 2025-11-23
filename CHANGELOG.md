@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.4.0](https://github.com/mddanish00/stas-ln-translator/compare/v1.3.0...v1.4.0) (2025-11-23)
+
+
+### Features
+
+* add overwrite flag ([d43ed4b](https://github.com/mddanish00/stas-ln-translator/commit/d43ed4b881450a203593f53cd7de6109ae537236))
+* change build backend to uv_build ([e8e4a01](https://github.com/mddanish00/stas-ln-translator/commit/e8e4a01e341aec1717862591f5036aa3464b4658))
+* migrate from asyncclick to pure argparse ([ce17e84](https://github.com/mddanish00/stas-ln-translator/commit/ce17e842d7601cbda1d777dfbe8b229dc193d882))
+
+
+### Bug Fixes
+
+* fix regression that introduced ([d43ed4b](https://github.com/mddanish00/stas-ln-translator/commit/d43ed4b881450a203593f53cd7de6109ae537236))
+* improve cli error message ([d43ed4b](https://github.com/mddanish00/stas-ln-translator/commit/d43ed4b881450a203593f53cd7de6109ae537236))
+* wrong message when Single request_type ([c549f4e](https://github.com/mddanish00/stas-ln-translator/commit/c549f4e848b0b15277261796fdcfd585431a23cf))
+
 ## [1.3.0](https://github.com/mddanish00/stas-ln-translator/compare/v1.2.0...v1.3.0) (2025-08-09)
 
 
