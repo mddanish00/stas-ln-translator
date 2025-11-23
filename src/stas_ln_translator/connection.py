@@ -9,7 +9,7 @@ async def create_translation_request(
         if type == "Batch"
         else {
             "content": texts[0],
-            "message": "translate sentence",
+            "message": "translate sentences",
         }
     )
 
