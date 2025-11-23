@@ -56,23 +56,33 @@ uv tool upgrade stas-ln-translator
 > - Tools > Epub3 Tools > Generate NCX/Guide for Epub2 readers
 
 ```commandline
-Usage: stas-ln-translator [OPTIONS] INPUT OUTPUT
+usage: stas-ln-translator [-h] [-v] [--batch_size BATCH_SIZE] [--request_type {Single,Batch}]
+                          [--tag_to_translate TAG_TO_TRANSLATE]
+                          [--translator_api_url TRANSLATOR_API_URL]
+                          input output
 
-  Run stas-ln-translator, an alternative standalone Light Novel translator for
-  Sugoi Translator. Recommended usage with stas-server.
+Run stas-ln-translator, an alternative standalone Light Novel translator for Sugoi Translator.
+Recommended usage with stas-server.
 
-Options:
-  -v, --version              Show the version and exit.
-  --batch_size INTEGER       Number of lines per batch in a request. Batch
-                             request type only.  [default: 100]
-  --request_type TEXT        Request type used when contacting API. Either
-                             'Single' or 'Batch'.  [default: Batch]
-  --tag_to_translate TEXT    HTML elements to translate, separated by commas
-                             [default: p,h1,h2,h3,h4,h5,h6,title]
-  --translator_api_url TEXT  stas-server or any other Sugoi Translator
-                             compatible API URL  [default:
-                             http://localhost:14366]
-  -h, --help                 Show this message and exit.
+positional arguments:
+  input                 Input EPUB file
+  output                Output EPUB file
+
+options:
+  -h, --help            show this help message and exit
+  -v, --version         show program's version number and exit
+  --batch_size BATCH_SIZE
+                        Number of lines per batch in a request. Batch request type only. (default:
+                        100)
+  --request_type {Single,Batch}
+                        Request type used when contacting API. Either 'Single' or 'Batch'.
+                        (default: Batch)
+  --tag_to_translate TAG_TO_TRANSLATE
+                        HTML elements to translate, separated by commas (default:
+                        p,h1,h2,h3,h4,h5,h6,title)
+  --translator_api_url TRANSLATOR_API_URL
+                        stas-server or any other Sugoi Translator compatible API URL (default:
+                        http://localhost:14366)
 ```
 
 #### Options
